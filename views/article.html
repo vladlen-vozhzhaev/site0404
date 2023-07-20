@@ -3,6 +3,17 @@
 <p id="author"></p>
 <a href="" id="editLink" class="me-3">[редактировать статью]</a>
 <a href="" id="deleteArticle" class="text-danger">[удаление статьи]</a>
+<div class="alert alert-secondary">
+    <h3>Комментарии</h3>
+    <form action="/addComment" method="post">
+        <div class="mb-3">
+            <textarea name="comment" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+            <input type="submit" class="form-control btn btn-secondary" value="Добавить комментарий">
+        </div>
+    </form>
+</div>
 <script>
     let articleId = location.pathname.split('/')[2];
     let title = document.getElementById('title');

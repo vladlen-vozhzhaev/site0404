@@ -1,6 +1,14 @@
 <div class="row">
     <div class="col-sm-4">
-        <img src="" alt="">
+        <img id="userAvatar" src="" alt="" width="80%">
+        <form action="/uploadAvatar" method="post" enctype="multipart/form-data">
+            <div>
+                <input name="userAvatar" type="file" class="form-control">
+            </div>
+            <div>
+                <input type="submit" value="Загрузить аватар" class="form-control btn btn-secondary">
+            </div>
+        </form>
     </div>
     <div class="col-sm-8">
         <p><strong>Имя: </strong><span id="name"></span></p>
@@ -14,6 +22,7 @@
     let lastname = document.getElementById('lastname');
     let email = document.getElementById('email');
     let userId = document.getElementById('userId');
+    let userAvatar = document.getElementById('userAvatar');
     fetch('/getUser')
         .then(function (response){return response.json()})
         .then(function (result){
@@ -22,5 +31,6 @@
             lastname.innerText = result.lastname;
             email.innerText = result.email;
             userId.innerText = result.id;
+            userAvatar.src = result.avatar;
         })
 </script>

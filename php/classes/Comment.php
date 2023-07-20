@@ -1,6 +1,6 @@
 <?php
 
-class Comment{
+class php{
     static function addComment(){
         global $mysqli;
         $comment = $_POST['comment'];

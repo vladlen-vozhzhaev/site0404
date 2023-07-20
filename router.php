@@ -6,6 +6,7 @@
     $mysqli = new mysqli('localhost', 'root', '', 'blog0404');
     require_once('php/classes/Blog.php');
     require_once('php/classes/User.php');
+    require_once('php/classes/Comment.php');
     if($path == "/login" and $method == "GET"){
         $content = file_get_contents('views/login.html');
     }else if($path == "/login" and $method == "POST"){
@@ -38,8 +39,11 @@
     }else if($pathArr[1] == "deleteArticle"){
         $id = $pathArr[2];
         exit(Blog::deleteArticle($id));
-    }
-    else{
+    }else if($path == "/uploadAvatar"){
+        exit(User::uploadAvatar());
+    }else if($path == "/addComment"){
+        exit(php::addComment());
+    }else{
         $content = "Такой не сущетсвует, ошибка 404";
     }
 
