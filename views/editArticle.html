@@ -1,0 +1,34 @@
+<h1 class="my-3 text-center">Редактировать статью</h1>
+<div class="col-sm-6 mx-auto">
+  <form action="/editArticle" method="post">
+    <input type="hidden" name="id" id="inputArticleId">
+    <div class="mb-3">
+      <input id="title" name="title" type="text" class="form-control" placeholder="Заголовок">
+    </div>
+    <div class="mb-3">
+      <textarea id="article" name="article" class="form-control" placeholder="Контент"></textarea>
+    </div>
+    <div class="mb-3">
+      <input id="author" type="text" class="form-control" name="author" placeholder="Автор">
+    </div>
+    <div class="mb-3">
+      <input type="submit" class="form-control btn btn-primary" value="Сохранить">
+    </div>
+  </form>
+</div>
+<script>
+  let articleId = location.pathname.split('/')[2];
+  let title = document.getElementById('title');
+  let article = document.getElementById('article');
+  let author = document.getElementById('author');
+  let inputArticleId = document.getElementById('inputArticleId');
+  inputArticleId.value = articleId;
+  fetch(`/getArticle/${articleId}`)
+          .then(function (response){return response.json()})
+          .then(function (result){
+            console.log(result);
+            title.value = result.title;
+            article.innerText = result.article;
+            author.value = result.author;
+          })
+</script>

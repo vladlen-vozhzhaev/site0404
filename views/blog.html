@@ -1,0 +1,21 @@
+<div id="mainContent">
+
+</div>
+<script>
+    let mainContent = document.getElementById("mainContent");
+    fetch('/getArticles')
+        .then(function (response){return response.json()})
+        .then(function (result){
+            let html = "";
+            for (let i = 0; i < result.length; i++) {
+                console.log(result[i]);
+                html = html + `
+                    <h2><a href="/article/${result[i].id}">${result[i].title}</a></h2>
+                    <div>${result[i].article}</div>
+                    <p>Автор: ${result[i].author}</p>
+                    <hr>
+                `;
+            }
+            mainContent.innerHTML = html;
+        })
+</script>

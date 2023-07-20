@@ -1,0 +1,23 @@
+<h2 id="title"></h2>
+<div id="article"></div>
+<p id="author"></p>
+<a href="" id="editLink" class="me-3">[редактировать статью]</a>
+<a href="" id="deleteArticle" class="text-danger">[удаление статьи]</a>
+<script>
+    let articleId = location.pathname.split('/')[2];
+    let title = document.getElementById('title');
+    let article = document.getElementById('article');
+    let author = document.getElementById('author');
+    let editLink = document.getElementById('editLink');
+    let deleteArticle = document.getElementById('deleteArticle');
+    fetch(`/getArticle/${articleId}`)
+        .then(function (response){return response.json()})
+        .then(function (result){
+            console.log(result);
+            title.innerText = result.title;
+            article.innerText = result.article;
+            author.innerText = "Автор: "+result.author;
+            editLink.href = "/editArticle/"+result.id;
+            deleteArticle.href = "/deleteArticle/"+result.id;
+        })
+</script>
