@@ -7,44 +7,33 @@
     require_once('php/classes/Blog.php');
     require_once('php/classes/User.php');
     require_once('php/classes/Comment.php');
-    if($path == "/login" and $method == "GET"){
-        $content = file_get_contents('views/login.html');
-    }else if($path == "/login" and $method == "POST"){
-        exit(User::login());
-    }else if($path == "/reg" and $method == "GET"){
-        $content =  file_get_contents('views/reg.html');
-    }else if($path == "/reg" and $method == "POST"){
-        exit(User::reg());
-    }else if($path == "/profile"){
-        $content = file_get_contents('views/profile.html');
-    }else if($path == "/getUser"){
-        exit(User::getUser());
-    }else if($path == "/addArticle"){
-        $content =  file_get_contents('views/addArticle.html');
-    }else if($path == "/blog"){
-        $content = file_get_contents('views/blog.html');
-    }else if($path == "/getArticles"){
-        exit(Blog::getArticles());
-    }else if($path == "/test"){
-        exit(Blog::test());
-    }else if($pathArr[1] == "article"){
-        $content = file_get_contents('views/article.html');
-    }else if($pathArr[1] == "getArticle") { // /getArticle/2
+    require_once('php/classes/Route.php');
+    // Работа с пользователем
+    Route::get('/login', 'views/login.html');
+    Route::get('/reg', 'views/reg.html');
+    Route::get('/profile', 'views/profile.html');
+    Route::get('/getUser', function(){return User::getUser();});
+    Route::get('/logout', function() {return User::logout();});
+    Route::post('/login', function(){return User::login();});
+    Route::post('/reg',function () {return User::reg();});
+    Route::post('/uploadAvatar', function(){return User::uploadAvatar();});
+    // Работа с блогом
+    Route::get('/addArticle', 'views/addArticle.html');
+    Route::get('/blog', 'views/blog.html');
+    Route::get('/getArticles', function(){return Blog::getArticles();});
+    Route::get('/article', 'views/article.html');
+    Route::get('/getArticle', function(){
+        global $pathArr;
         $id = $pathArr[2];
-        exit(Blog::getArticleById($id));
-    }else if($path == "/editArticle"){
-        exit(Blog::editArticleById());
-    }else if($pathArr[1] == "editArticle"){
-        $content = file_get_contents('views/editArticle.html');
-    }else if($pathArr[1] == "deleteArticle"){
+        return Blog::getArticleById($id);
+    });
+    Route::get('/deleteArticle', function(){
+        global $pathArr;
         $id = $pathArr[2];
-        exit(Blog::deleteArticle($id));
-    }else if($path == "/uploadAvatar"){
-        exit(User::uploadAvatar());
-    }else if($path == "/addComment"){
-        exit(php::addComment());
-    }else{
-        $content = "Такой не сущетсвует, ошибка 404";
-    }
-
-    require_once('template.php');
+        return Blog::deleteArticle($id);
+    });
+    Route::get('/editArticle', 'views/editArticle.html');
+    Route::post('/editArticle', function(){return Blog::editArticleById();});
+    // Работа с комментариями
+    Route::post('/addComment', function(){return Comment::addComment();});
+    Route::post('/getComments', function(){return Comment::getComments();});

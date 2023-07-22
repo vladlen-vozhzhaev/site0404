@@ -1,6 +1,6 @@
 <h1 class="text-center my-3">Регистрация на сайте</h1>
 <div class="col-sm-6 mx-auto">
-    <form action="/reg" method="post">
+    <form id="regForm" onsubmit="sendForm(); return false;" action="/reg" method="post">
         <div class="mb-3">
             <input type="text" name="name" class="form-control" placeholder="Имя">
         </div>
@@ -9,6 +9,7 @@
         </div>
         <div class="mb-3">
             <input type="email" name="email" class="form-control" placeholder="E-mail">
+            <p id="info" class="text-danger"></p>
         </div>
         <div class="mb-3">
             <input type="password" name="pass" class="form-control" placeholder="Пароль">
@@ -18,3 +19,22 @@
         </div>
     </form>
 </div>
+
+<script>
+    let regForm = document.getElementById('regForm');
+    let info = document.getElementById('info');
+    function sendForm(){
+        let formData = new FormData(regForm);
+        fetch('/reg', {
+            method: "post",
+            body: formData
+        }).then(function (response){return  response.json()})
+            .then(function (result){
+                if(result.result == "success"){
+                    location.href = "/profile";
+                }else{
+                    info.innerText = "Такой пользователь уже существует";
+                }
+            });
+    }
+</script>

@@ -22,8 +22,12 @@
                         <a class="nav-link" href="#">Ссылка</a>
                     </li>
                 </ul>
-                <a href="/login" class="btn btn-success me-3">Вход</a>
-                <a href="/reg" class="btn btn-success">Регистрация</a>
+                <? if(empty($_SESSION['id'])): ?>
+                    <a href="/login" class="btn btn-success me-3">Вход</a>
+                    <a href="/reg" class="btn btn-success">Регистрация</a>
+                <? else: ?>
+                    <a href="/logout" class="btn btn-success">Выход</a>
+                <? endif;?>
             </div>
         </div>
     </nav>

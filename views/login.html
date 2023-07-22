@@ -1,14 +1,33 @@
 <h1 class="my-3">Вход на сайт</h1>
 <div class="col-sm-6 mx-auto">
-    <form action="/login" method="post">
+    <form onsubmit="sendForm(); return false;" id="loginForm" action="/login" method="post">
         <div class="mb-3">
             <input type="email" name="email" class="form-control" placeholder="E-mail">
         </div>
         <div class="mb-3">
             <input type="password" name="pass" class="form-control" placeholder="Пароль">
+            <p id="info" class="text-danger"></p>
         </div>
         <div class="mb-3">
             <input type="submit" class="form-control btn btn-primary" value="Войти">
         </div>
     </form>
 </div>
+<script>
+    let loginForm = document.getElementById('loginForm');
+    let info = document.getElementById('info');
+    function sendForm(){
+        let formData = new FormData(loginForm);
+        fetch('/login', {
+            method: "POST",
+            body: formData
+        }).then(function (response){return response.json()})
+            .then(function (result){
+                if(result.result == "success"){
+                    location.href = "/profile";
+                }else{
+                    info.innerText = "Неправильный логин или пароль";
+                }
+            });
+    }
+</script>

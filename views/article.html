@@ -6,6 +6,7 @@
 <div class="alert alert-secondary">
     <h3>Комментарии</h3>
     <form action="/addComment" method="post">
+        <input type="hidden" name="articleId" id="articleIdInput">
         <div class="mb-3">
             <textarea name="comment" class="form-control"></textarea>
         </div>
@@ -13,6 +14,8 @@
             <input type="submit" class="form-control btn btn-secondary" value="Добавить комментарий">
         </div>
     </form>
+    <div class="my-5" id="commentsDiv">
+    </div>
 </div>
 <script>
     let articleId = location.pathname.split('/')[2];
@@ -21,6 +24,8 @@
     let author = document.getElementById('author');
     let editLink = document.getElementById('editLink');
     let deleteArticle = document.getElementById('deleteArticle');
+    let commentsDiv = document.getElementById('commentsDiv');
+    let articleIdInput = document.getElementById('articleIdInput');
     fetch(`/getArticle/${articleId}`)
         .then(function (response){return response.json()})
         .then(function (result){
@@ -30,5 +35,25 @@
             author.innerText = "Автор: "+result.author;
             editLink.href = "/editArticle/"+result.id;
             deleteArticle.href = "/deleteArticle/"+result.id;
+            articleIdInput.value = result.id;
+        })
+
+    let formData = new FormData();
+    formData.append("articleId", articleId);
+    fetch("/getComments", {
+        method: 'post',
+        body: formData
+    })
+        .then(function (response){return response.json()})
+        .then(function (result){
+            console.log(result);
+            let html = "";
+            for (let i = 0; i < result.length; i++) {
+                html = html + `
+                    <p>Оставил пользователь ${result[i].name}</p>
+                    <p>${result[i].comment}</p>
+                `;
+            }
+            commentsDiv.innerHTML = html;
         })
 </script>

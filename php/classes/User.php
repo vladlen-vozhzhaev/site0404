@@ -9,10 +9,11 @@
             $pass = password_hash($pass, PASSWORD_DEFAULT);
             $result = $mysqli->query("SELECT * FROM users WHERE email = '$email'");
             if($result->num_rows){
-                return "Такой пользователь уже существует";
+                return json_encode(['result'=>'error']);
             }else{
                 $mysqli->query("INSERT INTO users (name, lastname, email, pass) VALUES ('$name', '$lastname', '$email', '$pass')");
-                header('Location: /login');
+                User::login();
+                return json_encode(['result'=>'success']);
             }
         }
 
@@ -29,12 +30,13 @@
                     $_SESSION['email'] = $row['email']; // Сохраняем email в сессию
                     $_SESSION['id'] = $row['id']; // Сохраняем id в сессию
                     $_SESSION['avatar'] = $row['avatar']; // Сохраняем аватарку пользователя в сессию
-                    header("Location: /profile"); // Перенаправляем пользователя на страницу профиль
+                    //header("Location: /profile"); // Перенаправляем пользователя на страницу профиль
+                    return json_encode(['result'=>'success']);
                 }else{
-                    return "error";
+                    return json_encode(['result'=>'error']);
                 }
             }else{
-                return "error";
+                return json_encode(['result'=>'error']);
             }
         }
 
@@ -61,5 +63,9 @@
             }else{
                 echo "Ошибка, недопустимый формат файла";
             }
+        }
+        static function logout(){
+            session_destroy();
+            header('Location: /login');
         }
     }
