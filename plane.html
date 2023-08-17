@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Plane JS</title>
+        <style>
+            body{
+                height: 98vh;
+                background: url("img/bg-2.jpg") no-repeat;
+                background-size: 100% 100%;
+            }
+            #plane{
+                transform: scale(-1, 1);
+                width: 350px;
+                position: absolute;
+                left: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="img/plane.png" id="plane" alt="">
+        <script>
+            let plane = document.getElementById('plane');
+            let moveToRight = true; // Можно летать вправо
+            plane.onclick = function (event){
+                let img = document.createElement('img');
+                img.src = "img/parachute_PNG19418.png";
+                img.style.position = "absolute";
+                img.style.top = event.pageY+"px";
+                img.style.left = event.pageX+"px";
+                let parachuteY = event.pageY;
+                let parachuteX = event.pageX;
+                let parachuteMoveToRight = moveToRight;
+                setInterval(function (){
+                    parachuteY++;
+                    if(parachuteMoveToRight) parachuteX++;
+                    else parachuteX--;
+                    img.style.top = parachuteY+"px";
+                    img.style.left = parachuteX+"px";
+                }, 50)
+                document.body.append(img);
+            }
+            let left = 0;
+
+            function movePlane(){ // Функция перемещения самолёта
+                if(moveToRight){ // Можно ли лететь вправо
+                    left++;
+                    plane.style.transform = "scale(-1, 1)";
+                }else{ // Можно ли лететь влева
+                    left--;
+                    plane.style.transform = "scale(1, 1)";
+                }
+                if(left >= window.innerWidth-350){ // Если долетели до правой стороны экрана, то
+                    moveToRight = false; // Летать вправо больше нельзя
+                }
+                if(left === 0){ // Если долетели до левой части экрана
+                    moveToRight = true; // Можно летать вправо
+                }
+                plane.style.left = left+"px";
+            }
+
+            setInterval(movePlane, 10);
+        </script>
+    </body>
+</html>

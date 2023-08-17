@@ -18,7 +18,7 @@
     Route::post('/reg',function () {return User::reg();});
     Route::post('/uploadAvatar', function(){return User::uploadAvatar();});
     // Работа с блогом
-    Route::get('/addArticle', 'views/addArticle.html');
+
     Route::get('/blog', 'views/blog.html');
     Route::get('/getArticles', function(){return Blog::getArticles();});
     Route::get('/article', 'views/article.html');
@@ -37,3 +37,6 @@
     // Работа с комментариями
     Route::post('/addComment', function(){return Comment::addComment();});
     Route::post('/getComments', function(){return Comment::getComments();});
+    if(!empty($_SESSION['id'])){
+        Route::get('/addArticle', 'views/addArticle.html');
+    }

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <style>
+            .block{
+                position: absolute;
+                width: 200px;
+                height: 200px;
+                border: 1px solid black;
+            }
+            .circle{
+                width: 100px;
+                height: 100px;
+                border-radius: 50px;
+                position: absolute;
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="block" style="background: red; top: 0; left: 0;" data-color="red"></div>
+        <div class="block" style="background: lime; top: 0; right: 0;" data-color="lime"></div>
+        <div class="block" style="background: blue; bottom: 0; left: 0;" data-color="blue"></div>
+        <div class="block" style="background: yellow; bottom: 0; right: 0;" data-color="yellow"></div>
+        <div class="circle" style="background: red" data-color="red"></div>
+        <div class="circle" style="background: lime" data-color="lime"></div>
+        <div class="circle" style="background: blue" data-color="blue"></div>
+        <div class="circle" style="background: yellow" data-color="yellow"></div>
+        <script>
+            let circles = document.querySelectorAll('.circle');
+            let blocks = document.querySelectorAll('.block');
+            for (let i = 0; i < circles.length; i++) {
+                let circle = circles[i];
+                circle.onmousedown = function(event){
+                    circle.style.top = event.pageY-50+"px";
+                    circle.style.left = event.pageX-50+"px";
+                    window.onmousemove = function(e){
+                        circle.style.top = e.pageY-50+"px";
+                        circle.style.left = e.pageX-50+"px";
+                    }
+                    circle.onmouseup = function (ev){
+                        window.onmousemove = function (){return false;}
+                        for (let i = 0; i < blocks.length; i++) {
+                            let block = blocks[i];
+                            let circleColor = circle.dataset.color;
+                            let blockColor = block.dataset.color;
+                            if(
+                                ev.pageY < block.getBoundingClientRect().y+200 &&
+                                ev.pageY > block.getBoundingClientRect().y &&
+                                ev.pageX < block.getBoundingClientRect().x+200 &&
+                                ev.pageX > block.getBoundingClientRect().x &&
+                                circleColor === blockColor
+                            ){
+                                console.log(`Круг ${circleColor} в ${blockColor} квадрате`);
+                            }
+                        }
+
+                    }
+                }
+            }
+
+        </script>
+    </body>
+</html>
